@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/estilos.css" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Agenda de Contactos</title>
+</head>
+
+<body>
+    <header>
+        <h1>Agenda de Contactos</h1>
+    </header>
+
+    <main id="app">
+        <!-- Section for adding new contact -->
+        <section class="input-section">
+            <fieldset>
+                <legend>Agregar un contacto</legend>
+                <div class="form-group">
+                    <label for="contactName">Nombre:</label>
+                    <input id="contactName" v-model="contactName" type="text" placeholder="Nombre del contacto">
+                </div>
+                <div class="form-group">
+                    <label for="contactPhone">Teléfono:</label>
+                    <input id="contactPhone" v-model="contactPhone" type="text" placeholder="Número de teléfono">
+                </div>
+                <div class="form-group">
+                    <label for="contactCategory">Categoría:</label>
+                    <select id="contactCategory" v-model="contactCategory"> 
+                        <option value="Amigos">Amigos</option>
+                        <option value="Familia">Familia</option>
+                        <option value="Trabajo">Trabajo</option>
+                        <option value="Famosos">Famosos</option>
+                    </select>
+                </div>
+                <button @click="addContact">Agregar</button>
+            </fieldset>
+        </section>
+
+        <!-- Section to display contacts -->
+        <section class="contact-list">
+            <article>
+                <table>
+                    <tr>
+                        <th colspan="4">Contactos</th>
+                    </tr>
+                    <tr v-for="(contact, index) in contacts" :key="index" :class="{ highlight: contact.messages > 0 || contact.calls > 0 }">
+                        <td>{{ contact.name }}</td>
+                        <td>{{ contact.phone }}</td>
+                        <td>{{ contact.category }}</td>
+                        <td>
+                            <button @click="contact.calls++" :disabled="contact.calls >= 15">+</button>
+                            <input type="number" v-model.number="contact.calls" min="0" max="15" />
+                        </td>
+                        <td>
+                            <button @click="contact.messages++" :disabled="contact.messages >= 25">+</button>
+                            <input type="number" v-model.number="contact.messages" min="0" max="25" />
+                        </td>
+                        <td><button @click="removeContact(index)">Eliminar</button></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Total Llamadas:</strong></td>
+                        <td colspan="3">{{ totalCalls }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>Total Mensajes:</strong></td>
+                        <td colspan="3">{{ totalMessages }}</td>
+                    </tr>
+                </table>
+            </article>
+        </section>
+    </main>
+
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
